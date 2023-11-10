@@ -27,7 +27,7 @@ All notable changes to the Wazuh app project will be documented in this file.
 
 - Removed views in JSON and XML formats from management settings. [#5747](https://github.com/wazuh/wazuh-dashboard-plugins/pull/5747)
 
-## Wazuh v4.6.0 - OpenSearch Dashboards 2.8.0 - Revision 03
+## Wazuh v4.6.0 - OpenSearch Dashboards 2.8.0 - Revision 02
 
 ### Added
 
