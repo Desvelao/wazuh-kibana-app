@@ -7,15 +7,20 @@
 # More details at https://github.com/eslint/eslint
 # and https://eslint.org
 
-name: Linter
+name: Prettier
 
 on:
   pull_request:
 
 jobs:
-  linter:
+  prettier:
     name: Ensure the code format on the changed files
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
     steps:
       # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
       - name: Checkout code
@@ -46,5 +51,5 @@ jobs:
           plugin_package_json=$(ls -d plugins/* | head -n1)
           echo "Installing dependencies from plugin: ${plugin_package_json}"
           yarn --cwd "${plugin_package_json}" --modules-folder ../../node_modules
-          echo "Running eslint on the changed files"
-          npx eslint ${CHANGED_FILES}
+          echo "Running prettier on the changed files"
+          npx prettier ${CHANGED_FILES} --check --ignore-unknown
