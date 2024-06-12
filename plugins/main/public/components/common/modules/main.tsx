@@ -10,7 +10,7 @@
  * Find more information about this on the LICENSE file.
  */
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   EuiFlexItem,
   EuiToolTip,
