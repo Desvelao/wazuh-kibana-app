@@ -7,13 +7,13 @@
 # More details at https://github.com/eslint/eslint
 # and https://eslint.org
 
-name: Linter
+name: Prettier
 
 on:
   pull_request:
 
 jobs:
-  linter:
+  prettier:
     name: Ensure the code format on the changed files
     runs-on: ubuntu-latest
     permissions:
@@ -32,9 +32,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Verify the changed files
         run: |
           remote_name=origin
@@ -47,9 +44,12 @@ jobs:
           echo "Listing branches"
           git branch -a
           echo "Getting diff files ignoring deleted and getting the changed or renamed files"
-          CHANGED_FILES=$(git diff --name-status --diff-filter d ${remote_name}/${GITHUB_HEAD_REF}..${remote_name}/${GITHUB_BASE_REF} | awk '{print $2}')
+          CHANGED_FILES=$(git diff --name-status --diff-filter d ${remote_name}/${GITHUB_BASE_REF}..${remote_name}/${GITHUB_HEAD_REF} | awk '{print $2}')
           echo "Changed files:"
           echo "${CHANGED_FILES}"
           git checkout $GITHUB_HEAD_REF
-          echo "Running eslint on the changed files"
-          npx eslint ${CHANGED_FILES}
+          plugin_package_json=$(ls -d plugins/* | head -n1)
+          echo "Installing dependencies from plugin: ${plugin_package_json}"
+          yarn --cwd "${plugin_package_json}" --modules-folder ../../node_modules
+          echo "Running prettier on the changed files"
+          npx prettier ${CHANGED_FILES} --check --ignore-unknown
